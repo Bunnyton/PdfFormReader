@@ -51,7 +51,7 @@ def get_pdf_files(path):
 
 if __name__ == "__main__":
     pdf_path = r"C:\Users\Антон\Мои документы\практика"
-    #pdf_path = str(input('Введите путь до pdf форм(ы):'))
+    #pdf_path = str(input('Введите путь до pdf форм(ы): '))
 
     create_db()
     sql = Sql()
@@ -63,4 +63,12 @@ if __name__ == "__main__":
         # pprint.pprint(form_data)
         sql.insert_workers(form_data)
 
-    pprint.pprint(sql.get_workers())
+    for worker in sql.get_workers():
+        print("Фамилия: " + str(worker['Фамилия']))
+        print("Имя: " + str(worker['Имя']))
+        print("Отчество: " + str(worker['Отчество']))
+        print("Должность: " + str(worker['Должность']))
+        print("Электронная почта: " + str(worker['Электронная почта']))
+        print("Номер телефона: " + str(worker['Номер телефона']))
+        print("Организация: " + str(worker['Организация']))
+        print("------------------------------------------------")

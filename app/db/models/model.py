@@ -23,30 +23,39 @@ Base = declarative_base()
 class Organization(Base):
     __tablename__ = "organizations"
 
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+
     name = Column(String(255), default=None)
-    ogrn = Column(BigInteger(), primary_key=True)
-    kpp = Column(BigInteger(), default=None)
-    inn = Column(BigInteger(), default=None)
+    ogrn = Column(BigInteger(), unique=True)
+    kpp = Column(BigInteger(), unique=True)
+    inn = Column(BigInteger(), unique=True)
 
     is_comm_org = Column(Boolean(), default=True)
 
     mail_address = Column(String(255), default=None)
-    email = Column(String(255), default=None)
+    email = Column(String(255), unique=True)
+
+    __table_args__ = (Index("ogrn", "ogrn"),
+                      Index("kpp", "kpp"),
+                      Index("inn", "inn"),)
 
 class Worker(Base):
     __tablename__ = "contacts"
 
-    phone = Column(String(18), primary_key=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
 
     last_name = Column(String(255), default=None)
     first_name = Column(String(255), default=None)
     patronymic = Column(String(255), default=None)
 
     post = Column(String(255), default=None)
-    email = Column(String(255), default=None)
+    email = Column(String(255), unique=True)
+    phone = Column(String(18), unique=True)
 
-    organization_ogrn = Column(ForeignKey("organizations.ogrn"))
+    organization_id = Column(ForeignKey("organizations.id"))
     organization = relationship("Organization")
+
+    __table_args__ = (Index("phone", "phone"),)
 
 
 
